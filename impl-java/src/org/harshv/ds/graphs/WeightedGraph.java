@@ -16,17 +16,16 @@
 
 package org.harshv.ds.graphs;
 
-public interface WeightedUndirectedGraph<V, E> extends UndirectedGraph<V, E> {
+public interface WeightedGraph<V> extends Graph<V> {
 	
 	public static double DEFAULT_EDGE_WEIGHT = 1.0;
 	
-	public void setEdgeWeight(E e, double weight);
-	
-	public void setEdgeWeight(V src, V dest, double weight);
-
-	// It returns DEFAULT_EDGE_WEIGHT in case of default settings applies
-	// to  actual edge weight in graph.
-	public double getEdgeWeight(E e);
-	
 	public double getEdgeWeight(V src, V dest);
+	
+	public void addEdge(WEdge<V> edge) throws UnsupportedOperationException;
+	
+	public void setEdgeWeight(WEdge<V> e) throws UnsupportedOperationException;
+	
+	public void setEdgeWeight(V src, V dest, double weight) throws UnsupportedOperationException;
+	
 }
