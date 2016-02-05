@@ -18,31 +18,29 @@ package org.harshv.ds.basics;
 
 public class ArrayOps {
 
-		public static <V extends Comparable> int binarySrearch(V[] array, V searchItem) {
-			int startIndex  = 0;
-			int endIndex    = array.length -1;
-			int resultIndex = -1;
-			
-			while (startIndex <= endIndex) {
-				if (startIndex == endIndex) {
-					//System.out.println("start: " + startIndex + " and end: " + endIndex + " are equal ");
-					if (array[startIndex].compareTo(searchItem) == 0) {
-						//System.out.println("Element found at: " + startIndex);
-						resultIndex = startIndex;
-					} 
-					break;
-				}
-
-				int midIndex = (startIndex + endIndex) / 2;
-				if (array[midIndex].compareTo(searchItem)== 0) {
-					resultIndex = midIndex;
-					break;
-				} else if (array[midIndex].compareTo(searchItem) > 0) {
-					endIndex    = midIndex - 1;
-				} else {
-					startIndex  = midIndex + 1;
-				}
+	public static <V extends Comparable> int binarySrearch(V[] array, V searchItem) {
+		int startIndex  = 0;
+		int endIndex    = array.length -1;
+		int resultIndex = -1;
+		
+		while (startIndex <= endIndex) {
+			if (startIndex == endIndex) {
+				if (array[startIndex].compareTo(searchItem) == 0) {
+					resultIndex = startIndex;
+				} 
+				break;
 			}
-			return resultIndex;
+
+			int midIndex = (startIndex + endIndex) / 2;
+			if (array[midIndex].compareTo(searchItem)== 0) {
+				resultIndex = midIndex;
+				break;
+			} else if (array[midIndex].compareTo(searchItem) > 0) {
+				endIndex    = midIndex - 1;
+			} else {
+				startIndex  = midIndex + 1;
+			}
 		}
+		return resultIndex;
+	}
 }
