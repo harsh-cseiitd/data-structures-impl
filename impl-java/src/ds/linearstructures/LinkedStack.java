@@ -18,15 +18,20 @@ package ds.linearstructures;
 
 import java.util.Iterator;
 
+/* Stack is backed up by a Single linked list. All operations except
+ * toArray() and iterator() are performed in constant time.
+ * toArray() and iterator() are performed in liner time.
+ * @param <E>
+ */
 
 public class LinkedStack<E> implements Stack<E>, Iterable<E> {
 	
 	private StackNode topNode;
-	private int size = 0;
+	private int size;
 	
 	public LinkedStack() {
-		topNode = null;
-		size = 0;
+		this.topNode = null;
+		this.size = 0;
 	}
 
 	@Override
@@ -36,15 +41,15 @@ public class LinkedStack<E> implements Stack<E>, Iterable<E> {
 
 	@Override
 	public void clear() {
-		while (topNode != null) {
+		while (empty()) {
 			pop();
 		}
-		size = 0;
+		this.size = 0;
 	}
 
 	@Override
 	public boolean empty() {
-		return (topNode == null);
+		return (this.topNode == null);
 	}
 
 	@Override
@@ -54,44 +59,54 @@ public class LinkedStack<E> implements Stack<E>, Iterable<E> {
 
 	@Override
 	public int size() {
-		return size;
+		return this.size;
 	}
 
 	@Override
-	public E[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+	public Object[] toArray() {
+		if (empty()) {
+			return null;
+		}
+		Object[] array = new Object[size];
+		Iterator<E> stackIterator = this.iterator();
+		int index= 0;
+		while(stackIterator.hasNext()) {
+			array[index] = stackIterator.next();
+			index++;
+		}
+		return array;
 	}
 
 	@Override
 	public void push(E element) {
-		StackNode nextToTop = topNode;
-		topNode          = new StackNode();
-		topNode.element  = element;
-		topNode.next     = nextToTop;
-		size++;
+		StackNode nextToTop = this.topNode;
+		this.topNode        = new StackNode();
+		this.topNode.element= element;
+		this.topNode.next   = nextToTop;
+		this.size = this.size + 1;
 	}
 
 	@Override
 	public E pop() {
-		if (topNode != null) {
-			StackNode node = topNode;
-			topNode        = topNode.next;
-			node.next      = null; // removing dangling reference
-			size--;
-			return node.element;
+		if (!empty()) {
+			StackNode temp = this.topNode;
+			this.topNode   = this.topNode.next;
+			temp.next      = null; // removing dangling reference
+			this.size      = this.size - 1;
+			return temp.element;
 		}
 		return null;
 	}
 
 	@Override
 	public E top() {
-		if (topNode != null) {
-			return topNode.element;
+		if (!empty()) {
+			return this.topNode.element;
 		}
 		return null;
 	}
 
+	/** returns elements in LIFO order */
 	@Override
 	public Iterator<E> iterator() {
 		return new StackIterator();

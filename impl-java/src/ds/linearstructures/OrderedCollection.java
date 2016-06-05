@@ -49,5 +49,5 @@ public interface OrderedCollection<E> {
     /**
      * Returns array representation of the collection.
      */
-    public E[] toArray();
+    public Object[] toArray();
 }
