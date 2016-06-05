@@ -19,8 +19,8 @@ package ds.linearstructures;
 import java.util.Iterator;
 
 /* Stack is backed up by a Single linked list. All operations except
- * toArray() and iterator() are performed in constant time.
- * toArray() and iterator() are performed in liner time.
+ * toArray() are performed in constant time.
+ * toArray() is performed in liner time.
  * @param <E>
  */
 
