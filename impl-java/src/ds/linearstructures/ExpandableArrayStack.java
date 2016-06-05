@@ -16,21 +16,26 @@
 
 package ds.linearstructures;
 
+
+import java.util.ArrayList;
 import java.util.Iterator;
 
-/* Stack is backed up by a Single linked list. All operations except
+/* Stack is backed up by an ArrayList. All operations except
  * toArray() are performed in constant time.
  * toArray() is performed in liner time.
  * @param <E>
  */
 
-public class LinkedStack<E> implements Stack<E>, Iterable<E> {
-	
-	private StackNode topNode;
+public class ExpandableArrayStack<E> implements Stack<E>, Iterable<E> {
+
+	private ArrayList<E> elements;
+	private int topIndex;
 	private int size;
+	private static final int EMPTYINDEX = -1;
 	
-	public LinkedStack() {
-		this.topNode = null;
+	public ExpandableArrayStack() {
+		this.elements = new ArrayList<E>();
+		this.topIndex = EMPTYINDEX;
 		this.size = 0;
 	}
 
@@ -49,7 +54,7 @@ public class LinkedStack<E> implements Stack<E>, Iterable<E> {
 
 	@Override
 	public boolean empty() {
-		return (this.topNode == null);
+		return (this.topIndex == EMPTYINDEX);
 	}
 
 	@Override
@@ -77,23 +82,27 @@ public class LinkedStack<E> implements Stack<E>, Iterable<E> {
 		return array;
 	}
 
+	/* returns elements in LIFO order */
+	@Override
+	public Iterator<E> iterator() {
+		return new StackIterator();
+	}
+
 	@Override
 	public void push(E element) {
-		StackNode nextToTop = this.topNode;
-		this.topNode        = new StackNode();
-		this.topNode.element= element;
-		this.topNode.next   = nextToTop;
-		this.size = this.size + 1;
+		this.topIndex = this.topIndex + 1;
+		this.elements.ensureCapacity(this.topIndex);
+		this.elements.add(topIndex, element);
+		this.size = this.size +1;
 	}
 
 	@Override
 	public E pop() {
 		if (!empty()) {
-			StackNode temp = this.topNode;
-			this.topNode   = this.topNode.next;
-			temp.next      = null; // removing dangling reference
-			this.size      = this.size - 1;
-			return temp.element;
+			E element = this.elements.get(topIndex);
+			this.elements.set(topIndex, null);
+			this.size = this.size -1;
+			return element;
 		}
 		return null;
 	}
@@ -101,39 +110,28 @@ public class LinkedStack<E> implements Stack<E>, Iterable<E> {
 	@Override
 	public E top() {
 		if (!empty()) {
-			return this.topNode.element;
+			return this.elements.get(topIndex);
 		}
 		return null;
 	}
 
-	/* returns elements in LIFO order */
-	@Override
-	public Iterator<E> iterator() {
-		return new StackIterator();
-	}
-
-	private class StackNode {
-		E element;
-		StackNode next;
-	}
-
 	private class StackIterator implements Iterator<E> {
-		private StackNode currentNode;
+		private int currentIndex;
 		
 		StackIterator() {
-			currentNode = topNode;
+			currentIndex = topIndex;
 		}
 
 		@Override
 		public boolean hasNext() {
-			return currentNode != null;
+			return (currentIndex > EMPTYINDEX);
 		}
 
 		@Override
 		public E next() {
-			if (currentNode != null) {
-				E returnElement = (E) currentNode.element;
-				currentNode = currentNode.next;
+			if (currentIndex > EMPTYINDEX) {
+				E returnElement = (E) elements.get(currentIndex);
+				currentIndex    = currentIndex - 1;
 				return returnElement;
 			}
 			return null;
