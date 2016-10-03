@@ -20,34 +20,42 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/** 
+ * This graph implementation assumes vertex numbers 0 to V-1.
+ * Graph can be created as Directed or undirected however this
+ * property can't be modified later.
+ * @author harshv
+ *
+ */
+
 public class SimpleWGraphImpl implements SimpleWGraph {
 	private final boolean IS_WEIGHTED  = true;
 	private final int DEFAULT_SIZE     = 16;
-    private boolean isDirected         = false;
-    private int edgeCount              = 0;
-    private int vertexCount            = 0;
-    private ArrayList<LinkedList<WEdge>> adjList;
+	private boolean isDirected         = false;
+	private int edgeCount              = 0;
+	private int vertexCount            = 0;
+	private ArrayList<LinkedList<WEdge>> adjList;
 
 
-    public SimpleWGraphImpl() {
-    	this.adjList = new ArrayList<LinkedList<WEdge>>(DEFAULT_SIZE);
-    	for (int i = 0 ; i < DEFAULT_SIZE ; i++) {
+	public SimpleWGraphImpl() {
+		this.adjList = new ArrayList<LinkedList<WEdge>>(DEFAULT_SIZE);
+		for (int i = 0 ; i < DEFAULT_SIZE ; i++) {
 			this.adjList.add(new LinkedList<WEdge>());
 		}
-    	this.vertexCount = this.adjList.size();
-    }
+		this.vertexCount = this.adjList.size();
+	}
 
 
-    public SimpleWGraphImpl(int vertices, boolean isDirected) {
-    	this.adjList     = new ArrayList<LinkedList<WEdge>>(vertices);
-    	this.isDirected  = isDirected;
-    	for (int i = 0 ; i < vertices ; i++) {
+	public SimpleWGraphImpl(int vertices, boolean isDirected) {
+		this.adjList     = new ArrayList<LinkedList<WEdge>>(vertices);
+		this.isDirected  = isDirected;
+		for (int i = 0 ; i < vertices ; i++) {
 			this.adjList.add(new LinkedList<WEdge>());
 		}
-    	this.vertexCount = this.adjList.size();
-    }
+		this.vertexCount = this.adjList.size();
+	}
 
-    @Override
+	@Override
 	public boolean isDirected() {
 		return this.isDirected;
 	}
@@ -145,7 +153,6 @@ public class SimpleWGraphImpl implements SimpleWGraph {
 		int max = dest > src ? dest : src;
 		if (!isValidVertex(max)) {
 			addVertices(this.adjList.size(), max);
-			
 		}
 		LinkedList<WEdge> srcAdjList = this.adjList.get(src);
 		srcAdjList.add(new WEdgeImpl(src, dest, weight, isDirected()));

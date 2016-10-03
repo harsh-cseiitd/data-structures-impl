@@ -41,15 +41,16 @@ public class SimpleGraphImpl implements SimpleGraph {
     	for (int i = 0 ; i < DEFAULT_SIZE ; i++) {
 			this.adjList.add(new LinkedList<Integer>());
 		}
+    	this.vertexCount = this.adjList.size();
     }
 
     public SimpleGraphImpl(int vertices, boolean isDirected) {
     	this.adjList     = new ArrayList<LinkedList<Integer>>(vertices);
     	this.isDirected  = isDirected;
-    	this.vertexCount = vertices;
     	for (int i = 0 ; i < vertices ; i++) {
 			this.adjList.add(new LinkedList<Integer>());
 		}
+    	this.vertexCount = this.adjList.size();
     }
 
 	@Override
@@ -149,7 +150,6 @@ public class SimpleGraphImpl implements SimpleGraph {
 		for (int i = start ; i <= end ; i++) {
 			this.adjList.add(new LinkedList<Integer>());
 		}
-		System.out.println(String.format("INFO: added vertices from %d to %d", start, end));
 		this.vertexCount = this.adjList.size();
 	}
 
